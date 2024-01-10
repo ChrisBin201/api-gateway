@@ -1,0 +1,58 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+#        - id: auth-service
+#          uri: http://localhost:8080
+#          uri: http://172.26.35.183:8080
+
+#          predicates:
+#            - Path=/api/auth/**
+        - id: user-service
+          uri: http://localhost:8100
+#          uri: http://172.26.35.183:8080
+
+          predicates:
+            - Path=/api/user-service/**
+#          filters:
+#            - AuthFilter
+        - id: order-service
+          uri: http://localhost:8400
+          predicates:
+            - Path=/api/order-service/**
+#          filters:
+#            - AuthFilter
+        - id: product-service
+          uri: http://localhost:8200
+          predicates:
+            - Path=/api/product-service/**
+#          filters:
+#            - AuthFilter
+        - id: search-service
+          uri: http://localhost:8500
+          predicates:
+            - Path=/api/search-service/**
+#          filters:
+#            - AuthFilter
+        - id: notification-service
+          uri: http://localhost:8600
+          predicates:
+            - Path=/api/notification-service/**
+
+        - id: payment-service
+          uri: http://localhost:8700
+          predicates:
+            - Path=/api/payment-service/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
